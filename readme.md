@@ -38,7 +38,7 @@ Crear un backend para la aplicacion, que permina a restautantes crear sus menus 
 
 ### Diagrama MER
 
-[![Diagrama](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://dannkol.github.io/portafolios/)
+<img src="./doc/Diagrama_en_MER_Restaurantes.png" alt="Diagrama">
 
 ## 🛠 Tecnologias
 Node, Express, Mysql
