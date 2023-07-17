@@ -35,6 +35,11 @@ Crear un backend para la aplicacion, que permina a restautantes crear sus menus 
 * Especificar las rutas de la aplicacion
 * Crear validaciones para las entradas de datos
 
+
+### Diagrama MER
+
+[![Diagrama](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://dannkol.github.io/portafolios/)
+
 ## 🛠 Tecnologias
 Node, Express, Mysql
 
