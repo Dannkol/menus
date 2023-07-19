@@ -1,10 +1,12 @@
 CREATE DATABASE `Restaurantes_menus_api`;
 
+DROP DATABASE `Restaurantes_menus_api`;
+
 USE Restaurantes_menus_api;
 
 CREATE TABLE `ingredientes` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `nombre` varchar(255) NOT NULL
+    `nombre` varchar(15) NOT NULL
 );
 
 CREATE TABLE `platillos` (
@@ -25,8 +27,11 @@ CREATE TABLE `Platillo_Ingredientes` (
     FOREIGN KEY (`ingredientes_id`) REFERENCES `ingredientes` (`id`)
 );
 
-CREATE TABLE `infoRestaurante` (
+
+CREATE TABLE `Restaurantes` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `nombre` varchar(50) NOT NULL,
+    `password` varchar(50) NOT NULL,
     `email` VARCHAR(150) NOT NULL,
     `Telefono_Movile` VARCHAR(50) NOT NULL,
     `Direccion` VARCHAR(150) NOT NULL,
@@ -34,20 +39,11 @@ CREATE TABLE `infoRestaurante` (
     `NIT` BIGINT NOT NULL
 );
 
-CREATE TABLE `Restaurantes` (
-    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `nombre` varchar(50) NOT NULL,
-    `password` varchar(50) NOT NULL,
-    `infoRestaurante_id` INT(11) NOT NULL UNIQUE,
-    CONSTRAINT `fk_infoRestaurante`
-    FOREIGN KEY (`infoRestaurante_id`) REFERENCES `infoRestaurante` (`id`)
-);
-
-
 CREATE TABLE `Platillo_Restaurantes_menu` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
     `platillo_id` int(11) NOT NULL,
     `restaurantes_id` int(11) NOT NULL,
-    PRIMARY KEY (`platillo_id`,`restaurantes_id`),
+    PRIMARY KEY (`id`,`platillo_id`,`restaurantes_id`),
     CONSTRAINT `fk_platillo_restaurantes`
     FOREIGN KEY (`platillo_id`) REFERENCES `platillos` (`id`),
     CONSTRAINT `fk_restaurantes_platillo`
@@ -64,24 +60,18 @@ CREATE TABLE `Metodo_pago`(
 
 -- Clientes
 
-CREATE TABLE `InfoCliente`(
+CREATE TABLE `Clientes`(
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `Nombre` varchar(50) NOT NULL,
+    `Password` varchar(15) NOT NULL,
     `Email` varchar(150) NOT NULL,
-    `Telefono_Movil` varchar(50) NOT NULL,
+    `Telefono_Movil` varchar(15) NOT NULL,
     `Direccion` varchar(150) NOT NULL,
     `Metado_pago_def` INT(11) NOT NULL,
     CONSTRAINT `fk_metodo_pago_def`
     FOREIGN KEY (`Metado_pago_def`) REFERENCES `Metodo_pago` (`id`)
 );
 
-CREATE TABLE `Clientes`(
-    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `Nombre` varchar(150) NOT NULL,
-    `Password` varchar(150) NOT NULL,
-    `infoCliente_id` INT(11) NOT NULL UNIQUE,
-    CONSTRAINT `fk_infoCliente`
-    FOREIGN KEY (`infoCliente_id`) REFERENCES `InfoCliente` (`id`)
-);
 
 -- Pedidos
 
@@ -93,6 +83,10 @@ CREATE TABLE `Pedidos`(
     CONSTRAINT `fk_Metodo_pago`
     FOREIGN KEY (`Metodo_pago`) REFERENCES `Metodo_pago` (`id`)
 );
+ALTER TABLE `Clientes`
+    ADD COLUMN `Pedidos_id` int(11) NOT NULL,
+    ADD CONSTRAINT `fk_pedido_clientes`
+    Foreign Key (`Pedidos_id`) REFERENCES `Pedidos` (id);
 
 CREATE TABLE `Pedidos_platillos`(
     `PedidoId` int(11) NOT NULL,
@@ -102,17 +96,7 @@ CREATE TABLE `Pedidos_platillos`(
     CONSTRAINT `fk_pedidos_platillos`
     FOREIGN KEY (`PedidoId`) REFERENCES `Pedidos` (`id`),
     CONSTRAINT `fk_platillos_pedidos`
-    FOREIGN KEY (`PlatilloId`) REFERENCES `platillos` (`id`)
-);
-
-CREATE TABLE `Pedidos_Clientes`(
-    `PedidoId` int(11) NOT NULL,
-    `ClienteId` int(11) NOT NULL,
-    PRIMARY KEY (`PedidoId`,`ClienteId`),
-    CONSTRAINT `fk_pedidos_clientes`
-    FOREIGN KEY (`PedidoId`) REFERENCES `Pedidos` (`id`),
-    CONSTRAINT `fk_clientes_pedidos`
-    FOREIGN KEY (`ClienteId`) REFERENCES `Clientes` (`id`)
+    FOREIGN KEY (`PlatilloId`) REFERENCES `Platillo_Restaurantes_menu` (`id`)
 );
 
 CREATE TABLE `Pedidos_Restaurantes`(
