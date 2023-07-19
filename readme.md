@@ -38,7 +38,7 @@ Crear un backend para la aplicacion, que permina a restautantes crear sus menus 
 
 ### Diagrama MER
 
-<img src="./doc/Diagrama_en_MER_Restaurantes.png" alt="Diagrama">
+<img src="./doc/Diagrama_en_MER_Restaurantes.png" alt="Diagrama" width="800" height="800">
 
 ## 🛠 Tecnologias
 Node, Express, Mysql
