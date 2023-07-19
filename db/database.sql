@@ -1,6 +1,6 @@
 CREATE DATABASE `Restaurantes_menus_api`;
 
-USE restaurantes_menus_api;
+USE Restaurantes_menus_api;
 
 CREATE TABLE `ingredientes` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -51,7 +51,7 @@ CREATE TABLE `Platillo_Restaurantes_menu` (
     CONSTRAINT `fk_platillo_restaurantes`
     FOREIGN KEY (`platillo_id`) REFERENCES `platillos` (`id`),
     CONSTRAINT `fk_restaurantes_platillo`
-    FOREIGN KEY (`restaurantes_id`) REFERENCES `restaurantes` (`id`)
+    FOREIGN KEY (`restaurantes_id`) REFERENCES `Restaurantes` (`id`)
 );
 
 -- Metodo de pago
@@ -71,7 +71,7 @@ CREATE TABLE `InfoCliente`(
     `Direccion` varchar(150) NOT NULL,
     `Metado_pago_def` INT(11) NOT NULL,
     CONSTRAINT `fk_metodo_pago_def`
-    FOREIGN KEY (`Metado_pago_def`) REFERENCES `Metodo_Pago` (`id`)
+    FOREIGN KEY (`Metado_pago_def`) REFERENCES `Metodo_pago` (`id`)
 );
 
 CREATE TABLE `Clientes`(
@@ -122,5 +122,5 @@ CREATE TABLE `Pedidos_Restaurantes`(
     CONSTRAINT `fk_pedidos_restaurantes`
     FOREIGN KEY (`PedidoId`) REFERENCES `Pedidos` (`id`),
     CONSTRAINT `fk_restaurantes_pedidos`
-    FOREIGN KEY (`RestaurantesId`) REFERENCES `restaurantes` (`id`)
+    FOREIGN KEY (`RestaurantesId`) REFERENCES `Restaurantes` (`id`)
 );
