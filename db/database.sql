@@ -1,6 +1,8 @@
-CREATE DATABASE `Restaurantes_menus_api`;
 
 DROP DATABASE `Restaurantes_menus_api`;
+
+CREATE DATABASE `Restaurantes_menus_api`;
+
 
 USE Restaurantes_menus_api;
 
