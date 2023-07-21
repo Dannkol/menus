@@ -8,6 +8,7 @@ import { crearUsuario } from "../controllers/clientesControllers.js";
 // Middlewareq
 
 import authDTO from "../middleware/DTO_auth.js";
+import clientesDTO from "../middleware/DTO__cliente.js";
 
 const router = express.Router();
 
@@ -38,7 +39,7 @@ router.post("/auth", authDTO , authController);
  *
  */
 
-router.post("/usuario/login", crearUsuario);
+router.post("/usuario/login", clientesDTO ,crearUsuario);
 
 
 

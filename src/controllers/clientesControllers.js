@@ -10,7 +10,7 @@ const crearUsuario = async (req, res) => {
 
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Error al crear al crear al cliente" });
+      res.status(500).json({ message: "Error al crear cliente" });
     }
 };
 

@@ -65,7 +65,7 @@ CREATE TABLE `Metodo_pago`(
 CREATE TABLE `Clientes`(
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `Nombre` varchar(50) NOT NULL,
-    `Password` varchar(15) NOT NULL,
+    `Password` varchar(15) NOT NULL UNIQUE,
     `Email` varchar(150) NOT NULL,
     `Telefono_Movil` varchar(15) NOT NULL,
     `Direccion` varchar(150) NOT NULL,
