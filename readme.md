@@ -58,7 +58,7 @@ Cada Restaurante tiene su propio menu, pueden realizar todas las acciones de un 
 
 
 ```http
-  GET /api/auth/restaurante/menu
+GET /api/auth/restaurante/menu
 ```
 
 | Parameter | Type     | Description                |

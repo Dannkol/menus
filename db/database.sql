@@ -82,13 +82,14 @@ CREATE TABLE `Pedidos`(
     `Mensaje` VARCHAR(255) NOT NULL,
     `Created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `Metodo_pago` INT(11) NOT NULL,
-    CONSTRAINT `fk_Metodo_pago`
+    `Cliente_id` INT(11) NOT NULL,
+
+    CONSTRAINT `fk_Cliente_pedido` 
+    FOREIGN KEY (`Cliente_id`) REFERENCES `Clientes` (`id`),
+
+    CONSTRAINT `fk_Metodo_pago_pedido`
     FOREIGN KEY (`Metodo_pago`) REFERENCES `Metodo_pago` (`id`)
 );
-ALTER TABLE `Clientes`
-    ADD COLUMN `Pedidos_id` int(11) NOT NULL,
-    ADD CONSTRAINT `fk_pedido_clientes`
-    Foreign Key (`Pedidos_id`) REFERENCES `Pedidos` (id);
 
 CREATE TABLE `Pedidos_platillos`(
     `PedidoId` int(11) NOT NULL,

@@ -1,0 +1,30 @@
+{
+  "dependencies": {
+    "class-transformer": "0.5.1",
+    "class-validator": "0.14.0",
+    "dotenv": "16.3.1",
+    "express": "4.18.2",
+    "jsonwebtoken": "9.0.1",
+    "mysql2": "3.5.2",
+    "reflect-metadata": "0.1.13"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "typescript": "^5.1.6"
+  },
+  "name": "menus",
+  "description": "Proyecto para campus, una plataforma donde los restautantes puedan crear sus menus y sus comensales, puedan realizar pedidos, todo atraves de la api de whatsapp",
+  "version": "1.0.0",
+  "main": "app.js",
+  "type": "module",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev" : "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
