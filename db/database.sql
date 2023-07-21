@@ -94,12 +94,15 @@ CREATE TABLE `Pedidos`(
 CREATE TABLE `Pedidos_platillos`(
     `PedidoId` int(11) NOT NULL,
     `PlatilloId` int(11) NOT NULL,
+    `RestauranteId` int(11) NOT NULL,
     `Cantidad` int(11) NOT NULL,
-    PRIMARY KEY (`PedidoId`,`PlatilloId`),
+    PRIMARY KEY (`PedidoId`,`PlatilloId`, `RestauranteId`),
     CONSTRAINT `fk_pedidos_platillos`
     FOREIGN KEY (`PedidoId`) REFERENCES `Pedidos` (`id`),
     CONSTRAINT `fk_platillos_pedidos`
-    FOREIGN KEY (`PlatilloId`) REFERENCES `Platillo_Restaurantes_menu` (`id`)
+    FOREIGN KEY (`PlatilloId`) REFERENCES `Platillos` (`id`),
+    CONSTRAINT `fk_pedidos_restaurantes_platillo`
+    FOREIGN KEY (`RestauranteId`) REFERENCES `Restaurantes` (`id`)
 );
 
 CREATE TABLE `Pedidos_Restaurantes`(
