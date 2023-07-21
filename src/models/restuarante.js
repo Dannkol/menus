@@ -33,18 +33,5 @@ const getUser = async (data) => {
   }
 };
 
-/**
- *
-{
-    "email" : "correo@correo.com",
-    "password" : "dew223",
-    "metodo_pago" : 3,
-    "nombre" : "Daniel",
-    "direccion" : "Giron, Barrio el poblado #74-58",
-    "tel" : "3194xxxxx"
-}
- *
- */
-
 
 export default { getUser};
