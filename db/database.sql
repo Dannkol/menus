@@ -100,7 +100,7 @@ CREATE TABLE `Pedidos_platillos`(
     CONSTRAINT `fk_pedidos_platillos`
     FOREIGN KEY (`PedidoId`) REFERENCES `Pedidos` (`id`),
     CONSTRAINT `fk_platillos_pedidos`
-    FOREIGN KEY (`PlatilloId`) REFERENCES `Platillos` (`id`),
+    FOREIGN KEY (`PlatilloId`) REFERENCES `platillos` (`id`),
     CONSTRAINT `fk_pedidos_restaurantes_platillo`
     FOREIGN KEY (`RestauranteId`) REFERENCES `Restaurantes` (`id`)
 );
