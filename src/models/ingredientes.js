@@ -91,8 +91,6 @@ const createIngradiente = async (data) => {
 
   try {
 
-    console.log(data['nombre']);
-
     const query_user = `INSERT INTO ingredientes(nombre) VALUES(?);`;
 
     await connection.execute(query_user,[ data['nombre']]);
