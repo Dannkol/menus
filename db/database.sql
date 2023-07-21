@@ -29,16 +29,39 @@ CREATE TABLE `Platillo_Ingredientes` (
     FOREIGN KEY (`ingredientes_id`) REFERENCES `ingredientes` (`id`)
 );
 
+CREATE TABLE `Telefono` (
+    `id` INT(11) NOT NULL PRIMARY KEY,
+    `telefono` VARCHAR(50) NOT NULL
+);
+
+
+CREATE TABLE `Sucursales` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `direccion` VARCHAR(50) DEFAULT 'VIRTUAL'
+);
+
+CREATE TABLE `Sucursal_Telefonos` (
+    `telefono_id` INT(11) NOT NULL,
+    `sucursal_id` INT(11) NOT NULL,
+
+    CONSTRAINT `fk_telefono_sucursales`
+    FOREIGN KEY (`telefono_id`) REFERENCES `Telefono` (`id`),
+
+    CONSTRAINT `fk_sucursal_telefonos`
+    FOREIGN KEY (`sucursal_id`) REFERENCES `Sucursales` (`id`)
+);
 
 CREATE TABLE `Restaurantes` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `nombre` varchar(50) NOT NULL,
     `password` varchar(50) NOT NULL,
     `email` VARCHAR(150) NOT NULL,
-    `Telefono_Movile` VARCHAR(50) NOT NULL,
-    `Direccion` VARCHAR(150) NOT NULL,
+    `sucursal` INT(11) NOT NULL,
     `Slug` VARCHAR(150) NOT NULL,
-    `NIT` BIGINT NOT NULL
+    `NIT` BIGINT NOT NULL,
+
+    CONSTRAINT `fk_sucursal`
+    FOREIGN KEY (`sucursal`) REFERENCES `Sucursales` (`id`)
 );
 
 CREATE TABLE `Platillo_Restaurantes_menu` (
