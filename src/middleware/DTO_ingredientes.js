@@ -12,6 +12,7 @@ const ingredienteDTO = async (req, res, next) => {
   
     try {
       await validateOrReject(validaciones);
+
       next();
     } catch (errors) {
       for (const error of errors) {

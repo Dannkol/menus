@@ -29,6 +29,29 @@ const getAllPlatillos = async (req) => {
   }
 };
 
+
+const getAllPlatillospublic = async (req) => {
+  const connection = await getConnection();
+
+  try {
+    const query_user = `SELECT t1.id AS "menu", t3.nombre AS "restaurante", t1.restaurantes_id as "restaurante_id", t2.nombre AS "platillo", t1.platillo_id AS "platillo_id" , descripcion, precio, t2.slug FROM platillo_restaurantes_menu AS t1 
+        INNER JOIN platillos AS t2 ON t2.id = t1.platillo_id
+        INNER JOIN restaurantes AS t3 ON t3.id = t1.restaurantes_id;`;
+
+    const [result] = await connection.execute(query_user);
+
+    return {
+      mensaje: "Menu de los restaurante",
+      data: result,
+    };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  } finally {
+    connection.end();
+  }
+};
+
 const actualizaringredientes = async (data, id) => {
   const conexion = await getConnection();
   try {
@@ -179,4 +202,5 @@ export default {
   deletePlatillos,
   createPlatillos,
   actualizaringredientes,
+  getAllPlatillospublic
 };

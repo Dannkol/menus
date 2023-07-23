@@ -15,7 +15,7 @@ const authorization = async (req, res) => {
       return res.status(401).json({ error: "Credenciales inválidas" });
     } else {
       // Generar el token JWT
-      const token = jwt.sign({ id: user.id, nombre: user.nombre }, secretKey, {
+      const token = jwt.sign({ id: user.id, nombre: user.nombre , rol: req.rol }, secretKey, {
         expiresIn: "1h",
       });
 

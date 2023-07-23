@@ -4,12 +4,12 @@ import express from "express";
 
 import authController from "../controllers/authRestauranteController.js";
 import { getAllIngradiente , putIngradiente, getIngradiente, deleteIngradiente, createIngradiente} from '../controllers/ingredientesController.js';
-import { getAllPlatillos, putPlatillos, getPlatillos, deletePlatillos, createPlatillos, actualizaringredientes } from '../controllers/platillosController.js'
+import { getAllPlatillos, getAllPlatillospublic, putPlatillos, getPlatillos, deletePlatillos, createPlatillos, actualizaringredientes } from '../controllers/platillosController.js'
 
 // Middlewareq
 
 import authDTO from "../middleware/DTO_auth.js";
-import authenticateToken from "../middleware/JWT.js";
+import authenticateToken from "../middleware/JWT_restaurantes.js";
 import ingredienteDTO from '../middleware/DTO_ingredientes.js';
 import platillosDTO from "../middleware/DTO_platillos.js";
 
@@ -26,7 +26,11 @@ router.get('/', (req, res) => {
 //     "password" : "12345"
 // }
 
-router.post("/auth/restaurante", authDTO , authController);
+router.post("/auth/restaurante", (req, res, next) => {
+    req.rol = "restaurante";
+    authDTO(req, res, next);
+  },
+  authController);
 
 // CRUD ingredientes
 
@@ -48,6 +52,8 @@ router.delete('/auth/restaurante/menu/:id', authenticateToken ,deletePlatillos )
 
 
 
+// get platillos public
 
+router.get('/restaurante/menu/public', getAllPlatillospublic );
 
 export default router;

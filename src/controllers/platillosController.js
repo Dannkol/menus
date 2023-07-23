@@ -11,6 +11,17 @@ const getAllPlatillos = async (req, res) => {
   }
 };
 
+const getAllPlatillospublic = async (req, res) => {
+  try {
+    const result = await platillos.getAllPlatillospublic(req);
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error al traer los platillos" });
+  }
+};
+
 const actualizaringredientes = async (req, res) => {
   try {
     const data = req.body;
@@ -85,5 +96,6 @@ export {
   getPlatillos,
   deletePlatillos,
   createPlatillos,
-  actualizaringredientes
+  actualizaringredientes,
+  getAllPlatillospublic
 };

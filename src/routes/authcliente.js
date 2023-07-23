@@ -12,19 +12,25 @@ import clientesDTO from "../middleware/DTO__cliente.js";
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.json({
-        message: "Hello World"
-    })
-})
+router.get("/", (req, res) => {
+  res.json({
+    message: "Hello World",
+  });
+});
 
 // {
 //     "email" : "devjgi@gmail.com",
 //     "password" : "12345"
 // }
 
-router.post("/auth", authDTO , authController);
-
+router.post(
+  "/auth",
+  (req, res, next) => {
+    req.rol = "cliente";
+    authDTO(req, res, next);
+  },
+  authController
+);
 
 /**
  *
@@ -39,8 +45,6 @@ router.post("/auth", authDTO , authController);
  *
  */
 
-router.post("/usuario/login", clientesDTO ,crearUsuario);
-
-
+router.post("/usuario/login", clientesDTO, crearUsuario);
 
 export default router;
