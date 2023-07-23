@@ -2,8 +2,11 @@ import dotenv  from "dotenv"
 import express  from "express";
 //Modulos propios
 import configureApp from "./src/config/express.js";
+
+// Rutas
 import routes_auth_clientes from './src/routes/authcliente.js';
 import routes_auth_restaurante from './src/routes/authrestaurante.js';
+import routes_pedidos from './src/routes/pedidos.js'
 
 dotenv.config()
 
@@ -16,7 +19,7 @@ configureApp(app);
 // Definir las rutas
 app.use('/api',routes_auth_clientes);
 app.use('/api',routes_auth_restaurante);
-
+app.use('/api/pedidos',routes_pedidos);
 
 
 
