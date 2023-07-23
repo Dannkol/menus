@@ -19,6 +19,8 @@ CREATE TABLE `platillos` (
     `Slug` VARCHAR(100) NOT NULL
 );
 
+
+
 CREATE TABLE `Platillo_Ingredientes` (
     `platillo_id` int(11) NOT NULL,
     `ingredientes_id` int(11) NOT NULL,
@@ -68,6 +70,7 @@ CREATE TABLE `Platillo_Restaurantes_menu` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `platillo_id` int(11) NOT NULL,
     `restaurantes_id` int(11) NOT NULL,
+    `estado` BOOLEAN NOT NULL DEFAULT 1,
     PRIMARY KEY (`id`,`platillo_id`,`restaurantes_id`),
     CONSTRAINT `fk_platillo_restaurantes`
     FOREIGN KEY (`platillo_id`) REFERENCES `platillos` (`id`),
@@ -105,7 +108,7 @@ CREATE TABLE `Pedidos`(
     `Mensaje` VARCHAR(255) NOT NULL,
     `Created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `Metodo_pago` INT(11) NOT NULL,
-    `Cliente_id` INT(11) NOT NULL,
+    `Cliente_id` INT(11) NULL,
 
     CONSTRAINT `fk_Cliente_pedido` 
     FOREIGN KEY (`Cliente_id`) REFERENCES `Clientes` (`id`),
@@ -114,18 +117,17 @@ CREATE TABLE `Pedidos`(
     FOREIGN KEY (`Metodo_pago`) REFERENCES `Metodo_pago` (`id`)
 );
 
+
+
 CREATE TABLE `Pedidos_platillos`(
     `PedidoId` int(11) NOT NULL,
-    `PlatilloId` int(11) NOT NULL,
-    `RestauranteId` int(11) NOT NULL,
+    `menuId` int(11) NOT NULL,
     `Cantidad` int(11) NOT NULL,
-    PRIMARY KEY (`PedidoId`,`PlatilloId`, `RestauranteId`),
+    PRIMARY KEY (`PedidoId`,`menuId`),
     CONSTRAINT `fk_pedidos_platillos`
     FOREIGN KEY (`PedidoId`) REFERENCES `Pedidos` (`id`),
-    CONSTRAINT `fk_platillos_pedidos`
-    FOREIGN KEY (`PlatilloId`) REFERENCES `platillos` (`id`),
-    CONSTRAINT `fk_pedidos_restaurantes_platillo`
-    FOREIGN KEY (`RestauranteId`) REFERENCES `Restaurantes` (`id`)
+    CONSTRAINT `fk_menu_pedidos`
+    FOREIGN KEY (`menuId`) REFERENCES `platillo_restaurantes_menu` (`id`)
 );
 
 CREATE TABLE `Pedidos_Restaurantes`(
