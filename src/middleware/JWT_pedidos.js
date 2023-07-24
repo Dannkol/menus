@@ -20,6 +20,10 @@ const UserToken = (req, res, next) => {
       // El token es válido, se guarda el usuario en el objeto req para su posterior uso
       req.user = user;
 
+      user.rol !== "cliente"
+      ? res.status(403).json({ error: "No tienes permisos para esta acción" })
+      : next();
+
       next();
     });
   }

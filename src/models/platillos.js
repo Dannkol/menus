@@ -148,15 +148,6 @@ const deletePlatillos = async (req, id) => {
 const createPlatillos = async (req, data) => {
   const connection = await getConnection();
 
-  console.log(
-    data["nombre"],
-    data["descripcion"],
-    data["precio"],
-    data["slug"]
-      ? data["slug"]
-      : data["nombre"].replace(/ /g, "_") + parseInt(Math.random() * 1000)
-  );
-
   try {
     const query_user = `INSERT INTO platillos(nombre,descripcion,precio,Slug) VALUES( ?, ?, ?, ? );`;
 

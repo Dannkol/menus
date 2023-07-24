@@ -45,6 +45,7 @@ router.delete('/auth/restaurante/menu/ingredientes/:id', authenticateToken , ing
 router.get('/auth/restaurante/menu', authenticateToken , getAllPlatillos );
 router.post('/auth/restaurante/menu', authenticateToken , createPlatillos );
 router.put('/auth/restaurante/menu/:id', authenticateToken , putPlatillos );
+
 router.put('/auth/restaurante/menu/:platillo/ingrediente/:ingredientes', authenticateToken , actualizaringredientes );
 
 router.get('/auth/restaurante/menu/:id', authenticateToken , getPlatillos );

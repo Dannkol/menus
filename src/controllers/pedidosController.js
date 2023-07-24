@@ -7,8 +7,9 @@ const createPedido = async (req, res) => {
         res.status(200).json(pedido);
 
     } catch (error) {
+        res.status(500).json(`Error en la creacion del pedido: ${error.errno}`);
+        res.end();
         console.log(error);
-        throw error;
     }
 }
 
@@ -19,8 +20,10 @@ const getPedidos = async (req, res) => {
         res.status(200).json(pedido);
 
     } catch (error) {
+        res.status(500).json(`Error: ${error.errno}`);
+        res.end();
         console.log(error);
-        throw error;
+
     }
 }
 

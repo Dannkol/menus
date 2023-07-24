@@ -86,7 +86,7 @@ async function opciones(data) {
 const annopedidos = async (data) => {
   const connection = await getConnection();
   try {
-    const query_platillo = `SELECT t2.nombre , t5.telefono , t3.id FROM platillo_restaurantes_menu AS t1 
+    const query_platillo = `SELECT t2.nombre as "nombre" , t5.telefono , t3.id FROM platillo_restaurantes_menu AS t1 
         INNER JOIN platillos AS t2 ON t1.platillo_id = t2.id
         INNER JOIN restaurantes AS t3 ON t1.restaurantes_id = t3.id
         INNER JOIN sucursal_telefonos AS t4 ON t3.sucursal = t4.sucursal_id

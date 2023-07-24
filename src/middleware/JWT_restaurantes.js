@@ -19,7 +19,6 @@ const authenticateToken = (req, res, next) => {
 
     // El token es válido, se guarda el usuario en el objeto req para su posterior uso
     req.user = user;
-    console.log(user);
     user.rol !== "restaurante"
       ? res.status(403).json({ error: "No tienes permisos para esta acción" })
       : next();
