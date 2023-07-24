@@ -50,6 +50,69 @@ Node, Express, Mysql
 
 ## API Reference
 
+
+## Authentication
+
+Dependiendo del rol tienes siertos permisos en algunas tablas
+
+### Authentication Restaurantes
+
+```http
+GET /api/auth/restaurante/
+```
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `api_key` | `string` | **Required**. |
+| `email` | `string` | **Required**. |
+| `password` | `string` | **Required**. |
+
+Request
+
+```json
+{
+    "email" : "devjgi@gmail.com",
+    "password" : "12345"
+}
+```
+
+Responde
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibm9tYnJlIjoicGVwZXMiLCJyb2wiOiJyZXN0YXVyYW50ZSIsImlhdCI6MTY5MDE2NDg2NiwiZXhwIjoxNjkwMTY4NDY2fQ.5ua59hXVduEpwrJLlh57EFi3IZnh3inH6JhN8Q-Zm3g"
+}
+```
+
+### Authentication Clientes
+
+```http
+GET /api/auth/restaurante/
+```
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `api_key` | `string` | **Required**. |
+| `email` | `string` | **Required**. |
+| `password` | `string` | **Required**. |
+
+Request
+
+```json
+{
+    "email" : "clinete@correo.com",
+    "password" : "123a45"
+}
+```
+
+Responde
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibm9tYnJlIjoicGVwZXMiLCJyb2wiOiJyZXN0YXVyYW50ZSIsImlhdCI6MTY5MDE2NDg2NiwiZXhwIjoxNjkwMTY4NDY2fQ.5ua59hXVduEpwrJLlh57EFi3IZnh3inH6JhN8Q-Zm3g"
+}
+```
+
+
+
 ## Restaurantes
 
 Cada Restaurante tiene su propio menu, pueden realizar todas las acciones de un CRUD
@@ -194,7 +257,7 @@ Responde
 #### Get platilos
 
 ```http
-  GET /api/auth/restaurante/menu
+GET /api/auth/restaurante/menu
 ```
 | Parameter | Type     | Description |
 | :-------- | :------- | :------------ |
@@ -225,7 +288,7 @@ Responde
 #### Post platilos crea nuevos menus
 
 ```http
-  POST /api/auth/restaurante/menu
+POST /api/auth/restaurante/menu
 ```
 pormedio del api_key se oscia el platillo al restaurante
 
@@ -263,7 +326,7 @@ Responde
 #### Put platilos
 
 ```http
-  PUT /api/auth/restaurante/menu/{id}
+PUT /api/auth/restaurante/menu/{id}
 ```
 | Parameter | Type     | Description |
 | :-------- | :------- | :------------ |
@@ -281,10 +344,7 @@ Request
 {
     "nombre" : "papas fritas",
     "precio" : 3.000,
-    "descripcion" : "papas fritas de las calles",
-    "ingredientes" : [
-        1,2
-    ],// array con los id de los ingredientes 
+    "descripcion" : "papas fritas de las calles"
 }
 ```
 
@@ -295,10 +355,42 @@ Responde
     "mensaje" : "Platillo actualizado"
 }
 ```
+
+### Put ingredientes de un platillo
+
+```http
+PUT /auth/restaurante/menu/:platillo/ingrediente/:ingredientes
+```
+| Parameter | Type     | Description |
+| :-------- | :------- | :------------ |
+| `api_key`      | `string` | **Required**.  |
+| `platillo` | `number` | **Required**.  |
+| `ingredientes` | `number` | **Required**.  |
+
+Request
+
+params: id del platillo y el ingrediente a actualizar
+
+Body el id del ingrediente actualizado
+```json
+{
+  "ingrediente" : 1
+}
+
+```
+
+Responde 
+
+```json
+{
+  "mensaje": "Ingredientes actualizados"
+}
+```
+
 #### Delete platillo
 
 ```http
-  DELETE /api/auth/restaurante/menu/{id}
+DELETE /api/auth/restaurante/menu/{id}
 ```
 | Parameter | Type     | Description |
 | :-------- | :------- | :------------ |
@@ -321,7 +413,7 @@ los clientes pueden realizar pedidos, estos pueden estar registrados o ser anano
 #### Post realizar un pedido
 
 ```http
-POST /api/pedido
+POST /api/pedidos
 ```
 
 | Parameter | Type     | Description |
@@ -357,7 +449,7 @@ Request
 
 ```json
 {
-    "platillo" : 1,
+    "platillo_menu" : 1,
     "cantidad" : 2,
     "metodo_pago" : 2,
     "nombre" : "Daniel",
@@ -400,7 +492,7 @@ Request
 {
     "email" : "correo@correo.com",
     "password" : "dew223",
-    "metodo_pago" : 3,
+    "metodo_pago" : 1, // id del metodo de pago a usar
     "nombre" : "Daniel",
     "direccion" : "Giron, Barrio el poblado #74-58",
     "tel" : "3194xxxxx"
@@ -413,4 +505,70 @@ Responde
 {
     "mensaje" : "Usuario registrado"
 }
+```
+
+## Endpoints Publicos
+
+Estos endpoint tienen el fin de ser parte esencial de la navegacion de los usuarios ( clientes )
+
+### Get All platillos
+
+```http
+GET /api/restaurante/menu/public
+```
+
+Responde
+
+```json
+{
+  "mensaje": "Menu de los restaurante",
+  "data": [
+    {
+      "menu": 1,
+      "restaurante": "pepes",
+      "restaurante_id": 1,
+      "platillo": "papas saladas sin sal",
+      "platillo_id": 1,
+      "descripcion": "papas fritas de las calles",
+      "precio": "34.00",
+      "slug": "papas418"
+    },
+    {
+      "menu": 3,
+      "restaurante": "pepes",
+      "restaurante_id": 1,
+      "platillo": "pastas carno",
+      "platillo_id": 3,
+      "descripcion": "pres",
+      "precio": "3.00",
+      "slug": "pastas_carno778"
+    }
+  ]
+}
+```
+
+
+### Get All ingredientes del platillo
+
+```http
+GET /api/restaurante/menu/ingredientes/public/:id
+```
+
+| Parameter | Type     | Description |
+| :-------- | :------- | :------------ |
+| `:id` | `number` | **Required**. |
+
+Responde
+
+```json
+[
+  {
+    "id": 1,
+    "Nombre": "tomate grille"
+  },
+  {
+    "id": 2,
+    "Nombre": "Pasta"
+  }
+]
 ```
