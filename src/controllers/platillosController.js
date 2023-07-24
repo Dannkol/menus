@@ -13,7 +13,7 @@ const getAllPlatillos = async (req, res) => {
 
 const getAllPlatillospublic = async (req, res) => {
   try {
-    const result = await platillos.getAllPlatillospublic(req);
+    const result = await platillos.getAllPlatillospublic();
 
     res.status(200).json(result);
   } catch (error) {

@@ -14,9 +14,8 @@ const getAllIngradiente = async (data) => {
     const query_user = `SELECT Nombre FROM ingredientes;`;
 
     const [result] = await connection.execute(query_user);
-    
-    return result;
 
+    return result;
   } catch (error) {
     console.log(error);
     throw error;
@@ -25,19 +24,35 @@ const getAllIngradiente = async (data) => {
   }
 };
 
-const putIngradiente = async (data , id) => {
+const getAllIngradientePublic = async (id) => {
   const connection = await getConnection();
 
   try {
+    const query_user = `SELECT t2.id , t2.Nombre FROM platillo_ingredientes as t1 
+    INNER JOIN ingredientes AS t2 ON t1.ingredientes_id = t2.id 
+    WHERE t1.platillo_id = ?;`;
 
+    const [result] = await connection.execute(query_user, [id]);
+
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  } finally {
+    connection.end();
+  }
+};
+const putIngradiente = async (data, id) => {
+  const connection = await getConnection();
+
+  try {
     const query_user = `UPDATE ingredientes SET nombre = ? WHERE id = ?;`;
 
     await connection.execute(query_user, [data[0], id]);
-    
-    return {
-      "nombre" : "Ingrediente actualizados"
-  };
 
+    return {
+      nombre: "Ingrediente actualizados",
+    };
   } catch (error) {
     console.log(error);
     throw error;
@@ -50,13 +65,11 @@ const getIngradiente = async (id) => {
   const connection = await getConnection();
 
   try {
-
     const query_user = `Select Nombre from ingredientes WHERE id = ?;`;
 
     const [result] = await connection.execute(query_user, [id]);
-    
-    return result;
 
+    return result;
   } catch (error) {
     console.log(error);
     throw error;
@@ -69,15 +82,13 @@ const deleteIngradiente = async (id) => {
   const connection = await getConnection();
 
   try {
-
     const query_user = `DELETE FROM ingredientes WHERE id = ? ;`;
 
     await connection.execute(query_user, [id]);
-    
-    return {
-      "nombre" : "Ingrediente Eliminado"
-  };
 
+    return {
+      nombre: "Ingrediente Eliminado",
+    };
   } catch (error) {
     console.log(error);
     throw error;
@@ -90,15 +101,13 @@ const createIngradiente = async (data) => {
   const connection = await getConnection();
 
   try {
-
     const query_user = `INSERT INTO ingredientes(nombre) VALUES(?);`;
 
-    await connection.execute(query_user,[ data['nombre']]);
-    
-    return {
-      "nombre" : "Ingredientes agregado"
-  };
+    await connection.execute(query_user, [data["nombre"]]);
 
+    return {
+      nombre: "Ingredientes agregado",
+    };
   } catch (error) {
     console.log(error);
     throw error;
@@ -107,5 +116,11 @@ const createIngradiente = async (data) => {
   }
 };
 
-
-export default { getAllIngradiente , putIngradiente, getIngradiente, deleteIngradiente, createIngradiente };
+export default {
+  getAllIngradiente,
+  putIngradiente,
+  getIngradiente,
+  deleteIngradiente,
+  createIngradiente,
+  getAllIngradientePublic,
+};
