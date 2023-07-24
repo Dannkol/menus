@@ -28,17 +28,68 @@ Crear un backend para la aplicacion, que permina a restautantes crear sus menus 
 
 ### Objetivos Especificos
 
-* Crear roles en la eplicacion
 * Craer el diagrama MER de la base de datos
 * Connectar el backend con la api de whatsapp
-* Crear plantillas para el envio de los mensajes
+* Crear plantilla para el envio de los mensajes
 * Especificar las rutas de la aplicacion
+* Configurar autenticación por JWT
+* Craer un sistema para que los restaurantes creen sus propios menus
 * Crear validaciones para las entradas de datos
 
 
-### Diagrama MER
+## Navegabilidad
+
+### Restaurantes
+ 
+ * Crear ingredientes
+ * Crea platillos y los relaciona con los ingredientes
+ * Relaciona los platillos con el mismo, esto crea los menus
+
+### Clientes
+ 
+ * Puede estar registrado o ser anonimo
+ * Consulta los platillos y sus ingredientes
+ * Crea un nuevo pedido
+ * Digita su info con el pedido o esta se agg automaticamente si el clientes ya esta registrado
+ * Se asocia el pedido con el cliente, el restaurante y el menu
+ * El cliente recibe un link de whatsapp con un mensaje personalizado
+ * Usa el link para confirmar su pedido con el restaurante
+
+
+## Diagrama MER
 
 <img src="./doc/Diagrama_en_MER_Restaurantes.png" alt="Diagrama">
+
+## Run Locally
+
+Clona el repositorio
+
+```bash
+  git clone https://github.com/Dannkol/menus.git
+```
+
+ve al directorio
+
+```bash
+  cd menus
+```
+
+Instala las dependencias
+
+```bash
+  npm install
+```
+
+Inicializa el servidor de desarrollo
+
+```bash
+  npm run dev
+```
+
+crea la base de datos con el archivo database.sql, este se encuentra en la carpeta db, tambien puedes usar el script phpmyadmin.sql, este es el script generado por phpmyadmin contiene la data minima necesaria para el buen funcionamiento de la aplicacion.
+
+#### NOTA: NO OLVIDES CAMBIAR LAS VARIABLES DE ENTORNO A TUS NECESIDADES
+
 
 ## 🛠 Tecnologias
 Node, Express, Mysql
@@ -53,7 +104,7 @@ Node, Express, Mysql
 
 ## Authentication
 
-Dependiendo del rol tienes siertos permisos en algunas tablas
+Dependiendo del rol tienes Ciertos permisos en algunas tablas
 
 ### Authentication Restaurantes
 
