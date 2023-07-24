@@ -2,7 +2,7 @@ import express from "express";
 
 // controllers
 
-import { createPedido } from "../controllers/pedidosController.js"
+import { createPedido, getPedidos } from "../controllers/pedidosController.js"
 
 // middleware
 import UserToken from "../middleware/JWT_pedidos.js";
@@ -12,9 +12,12 @@ const router = express.Router();
 
 
 
-// Traer todos los pedidos del usuario
+// crear un pedido del usuario
 router.post('/', UserToken , pedidosDTO , createPedido )
 
+// traer todos los pedidos de un usuario
+
+router.get('/', UserToken, getPedidos)
 
 
 export default router;

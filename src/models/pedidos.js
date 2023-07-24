@@ -114,11 +114,11 @@ const annopedidos = async (data) => {
   }
 };
 
-const createPedido = async (user, data) => {
-  // console.log(!user ? await annopedidos(data) : await authCliente(user.id, data) );
+const createPedido = async (user, data, req, res) => {
   const connection = await getConnection();
   try {
-    // Objeto proporcionado
+
+    // Objeto dependiendo si el usuario es registrado o anonimo
     let objeto = !user
       ? await annopedidos(data)
       : await authCliente(user.id, data);
@@ -136,21 +136,31 @@ const createPedido = async (user, data) => {
       user.id === undefined ? null : user.id,
     ]);
 
-    console.log([row_insert_pedido.insertId, data["platillo_menu"]]);
-
     const query_insert_pedido_platillo = `INSERT INTO pedidos_platillos(PedidoId, menuId, Cantidad) VALUES (?, ?, ?);`;
-    await connection.execute(
-      query_insert_pedido_platillo,
-      [row_insert_pedido.insertId, data["platillo_menu"], data["cantidad"]]
-    );
-
-    console.log([row_insert_pedido.insertId, data["restaurantes_id"]]);
+    await connection.execute(query_insert_pedido_platillo, [
+      row_insert_pedido.insertId,
+      data["platillo_menu"],
+      data["cantidad"],
+    ]);
 
     const query_insert_pedidos_restaurantes = `INSERT INTO pedidos_restaurantes(PedidoId, RestaurantesId) VALUES (?,?);`;
-    await connection.execute(
-      query_insert_pedidos_restaurantes,
-      [row_insert_pedido.insertId, data["restaurantes_id"]]
-    );
+    await connection.execute(query_insert_pedidos_restaurantes, [
+      row_insert_pedido.insertId,
+      data["restaurantes_id"],
+    ]);
+
+    // guardo en las cookies el historial de los usuarios anonimos
+    
+    if (!user) {
+      let pedidos = req.cookies.pedidos;
+      if (pedidos) {
+        pedidos.push(row_insert_pedido.insertId);
+        res.cookie("pedidos", pedidos, { httpOnly: true });
+      } else {
+        const pedidos = [row_insert_pedido.insertId];
+        res.cookie("pedidos", pedidos, { httpOnly: true });
+      }
+    }
 
     return {
       mensaje: "Pedido enviado al restaurante",
@@ -164,4 +174,47 @@ const createPedido = async (user, data) => {
   }
 };
 
-export default { createPedido };
+const getPedidos = async(req, user) => {
+  const connection = await getConnection();
+  const ids = !user ? req.cookies.pedidos : req.user.id;
+  try {
+    // Construir la consulta SQL con la cláusula IN y los IDs del array
+    const query = !user ? `
+      SELECT t1.Mensaje, t1.Created_at AS "Fecha", t2.Nombre AS "Metod_pago",
+        t5.nombre AS "Restaurante", t6.nombre AS "Platilo", t6.precio * t3.Cantidad AS "Total"
+      FROM pedidos AS t1 
+      INNER JOIN metodo_pago AS t2 ON t1.Metodo_pago = t2.id
+      INNER JOIN pedidos_platillos AS t3 ON t3.PedidoId = t1.id
+      INNER JOIN platillo_restaurantes_menu AS t4 ON t4.restaurantes_id = t3.menuId
+      INNER JOIN restaurantes AS t5 ON t5.id = t4.restaurantes_id
+      INNER JOIN platillos AS t6 ON t6.id = t4.platillo_id
+      WHERE t1.id IN (?)
+    ` : `
+    SELECT t1.Mensaje, t1.Created_at AS "Fecha", t2.Nombre AS "Metod_pago",
+      t5.nombre AS "Restaurante", t6.nombre AS "Platilo", t6.precio * t3.Cantidad AS "Total"
+    FROM pedidos AS t1 
+    INNER JOIN metodo_pago AS t2 ON t1.Metodo_pago = t2.id
+    INNER JOIN pedidos_platillos AS t3 ON t3.PedidoId = t1.id
+    INNER JOIN platillo_restaurantes_menu AS t4 ON t4.restaurantes_id = t3.menuId
+    INNER JOIN restaurantes AS t5 ON t5.id = t4.restaurantes_id
+    INNER JOIN platillos AS t6 ON t6.id = t4.platillo_id
+    WHERE t1.Cliente_id = ?
+   ;`
+
+    // Ejecutar la consulta con los IDs del array
+    const [rows, fields] = await connection.query(query, [ids]);
+
+    // Aquí tienes los resultados de la consulta
+    return{
+      mensaje : "mis pedidos",
+      data : rows
+    }
+  } catch (error) {
+    console.error('Error en la consulta:', error);
+  } finally {
+    connection.end();
+  }
+
+}
+
+export default { createPedido, getPedidos };

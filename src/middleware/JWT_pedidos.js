@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 import jwtconfig from "../config/jwtconfig.js";
-import e from "express";
+
 
 const UserToken = (req, res, next) => {
   const token = req.headers.authorization;

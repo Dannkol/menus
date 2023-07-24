@@ -1,5 +1,7 @@
 import dotenv  from "dotenv"
 import express  from "express";
+import cookieParser from "cookie-parser";
+
 //Modulos propios
 import configureApp from "./src/config/express.js";
 
@@ -15,6 +17,7 @@ const app = express();
 // Configurar la aplicación Express
 configureApp(app);
 
+app.use(cookieParser());
 
 // Definir las rutas
 app.use('/api',routes_auth_clientes);
