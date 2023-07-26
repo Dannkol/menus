@@ -24,7 +24,6 @@ const UserToken = (req, res, next) => {
       ? res.status(403).json({ error: "No tienes permisos para esta acción" })
       : next();
 
-      next();
     });
   }
 };

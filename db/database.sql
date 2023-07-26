@@ -1,10 +1,10 @@
 
-DROP DATABASE `Restaurantes_menus_api`;
+DROP DATABASE IF EXISTS `restaurantes_menus_api`;
 
-CREATE DATABASE `Restaurantes_menus_api`;
+CREATE DATABASE `restaurantes_menus_api`;
 
 
-USE Restaurantes_menus_api;
+USE restaurantes_menus_api;
 
 CREATE TABLE `ingredientes` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -119,17 +119,6 @@ CREATE TABLE `Pedidos`(
 
 
 
-CREATE TABLE `Pedidos_platillos`(
-    `PedidoId` int(11) NOT NULL,
-    `menuId` int(11) NOT NULL,
-    `Cantidad` int(11) NOT NULL,
-    PRIMARY KEY (`PedidoId`,`menuId`),
-    CONSTRAINT `fk_pedidos_platillos`
-    FOREIGN KEY (`PedidoId`) REFERENCES `Pedidos` (`id`),
-    CONSTRAINT `fk_menu_pedidos`
-    FOREIGN KEY (`menuId`) REFERENCES `platillo_restaurantes_menu` (`id`)
-);
-
 CREATE TABLE `Pedidos_Restaurantes`(
     `PedidoId` int(11) NOT NULL,
     `RestaurantesId` int(11) NOT NULL,
@@ -138,4 +127,14 @@ CREATE TABLE `Pedidos_Restaurantes`(
     FOREIGN KEY (`PedidoId`) REFERENCES `Pedidos` (`id`),
     CONSTRAINT `fk_restaurantes_pedidos`
     FOREIGN KEY (`RestaurantesId`) REFERENCES `Restaurantes` (`id`)
+);
+CREATE TABLE `Pedidos_platillos`(
+    `PedidoId` int(11) NOT NULL,
+    `menuId` int(11) NOT NULL,
+    `Cantidad` int(11) NOT NULL,
+    PRIMARY KEY (`PedidoId`,`menuId`),
+    CONSTRAINT `fk_pedidos_platillos`
+    FOREIGN KEY (`PedidoId`) REFERENCES `Pedidos` (`id`),
+    CONSTRAINT `fk_menu_pedidos`
+    FOREIGN KEY (`menuId`) REFERENCES `Platillo_Restaurantes_menu` (`id`)
 );

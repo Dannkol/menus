@@ -1,11 +1,4 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Servidor: 127.0.0.1
--- Tiempo de generación: 24-07-2023 a las 05:49:58
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
+
 
 DROP DATABASE IF EXISTS `restaurantes_menus_api`;
 
@@ -18,20 +11,6 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Base de datos: `restaurantes_menus_api`
---
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `clientes`
---
 
 CREATE TABLE `clientes` (
   `id` int(11) NOT NULL,
@@ -43,20 +22,107 @@ CREATE TABLE `clientes` (
   `Metado_pago_def` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `ingredientes`
---
 
 CREATE TABLE `ingredientes` (
   `id` int(11) NOT NULL,
   `nombre` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `ingredientes`
---
+
+CREATE TABLE `metodo_pago` (
+  `id` int(11) NOT NULL,
+  `Nombre` varchar(150) NOT NULL,
+  `Abreviacion` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+CREATE TABLE `pedidos` (
+  `id` int(11) NOT NULL,
+  `Mensaje` varchar(255) NOT NULL,
+  `Created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `Metodo_pago` int(11) NOT NULL,
+  `Cliente_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+CREATE TABLE `pedidos_platillos` (
+  `PedidoId` int(11) NOT NULL,
+  `menuId` int(11) NOT NULL,
+  `Cantidad` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+CREATE TABLE `pedidos_restaurantes` (
+  `PedidoId` int(11) NOT NULL,
+  `RestaurantesId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+CREATE TABLE `platillos` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `descripcion` varchar(50) NOT NULL,
+  `precio` decimal(10,2) NOT NULL,
+  `Slug` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `platillo_ingredientes` (
+  `platillo_id` int(11) NOT NULL,
+  `ingredientes_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+CREATE TABLE `platillo_restaurantes_menu` (
+  `id` int(11) NOT NULL,
+  `platillo_id` int(11) NOT NULL,
+  `restaurantes_id` int(11) NOT NULL,
+  `estado` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+CREATE TABLE `restaurantes` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `sucursal` int(11) NOT NULL,
+  `Slug` varchar(150) NOT NULL,
+  `NIT` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+CREATE TABLE `sucursales` (
+  `id` int(11) NOT NULL,
+  `direccion` varchar(50) DEFAULT 'VIRTUAL'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+CREATE TABLE `sucursal_telefonos` (
+  `telefono_id` int(11) NOT NULL,
+  `sucursal_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+CREATE TABLE `telefono` (
+  `id` int(11) NOT NULL,
+  `telefono` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+-- Data DUMP
+
+
+INSERT INTO `clientes`(`Nombre`,`Password`,`Email`,`Telefono_Movil`,`Direccion`,`Metado_pago_def`) VALUES('Daniel','12345','daniel@correo.com','13254868','el poblado',1);
+
 
 INSERT INTO `ingredientes` (`id`, `nombre`) VALUES
 (1, 'papa'),
@@ -68,101 +134,17 @@ INSERT INTO `ingredientes` (`id`, `nombre`) VALUES
 (7, 'alga'),
 (8, 'tomate');
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `metodo_pago`
---
-
-CREATE TABLE `metodo_pago` (
-  `id` int(11) NOT NULL,
-  `Nombre` varchar(150) NOT NULL,
-  `Abreviacion` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `metodo_pago`
---
-
 INSERT INTO `metodo_pago` (`id`, `Nombre`, `Abreviacion`) VALUES
 (1, 'Efectivo', 'Ef'),
 (2, 'Tarjeta de credito', 'TC'),
 (3, 'Tarjeta de debito', 'TD');
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `pedidos`
---
-
-CREATE TABLE `pedidos` (
-  `id` int(11) NOT NULL,
-  `Mensaje` varchar(255) NOT NULL,
-  `Created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `Metodo_pago` int(11) NOT NULL,
-  `Cliente_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `pedidos_platillos`
---
-
-CREATE TABLE `pedidos_platillos` (
-  `PedidoId` int(11) NOT NULL,
-  `menuId` int(11) NOT NULL,
-  `Cantidad` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `pedidos_restaurantes`
---
-
-CREATE TABLE `pedidos_restaurantes` (
-  `PedidoId` int(11) NOT NULL,
-  `RestaurantesId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `platillos`
---
-
-CREATE TABLE `platillos` (
-  `id` int(11) NOT NULL,
-  `nombre` varchar(50) NOT NULL,
-  `descripcion` varchar(50) NOT NULL,
-  `precio` decimal(10,2) NOT NULL,
-  `Slug` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `platillos`
---
 
 INSERT INTO `platillos` (`id`, `nombre`, `descripcion`, `precio`, `Slug`) VALUES
 (1, 'sushi salmon', 'sushi de salmon 1 rol', 50000.00, 'shu234'),
 (2, 'salsa de tomate', 'salsa boloñesa', 20000.00, 'salTom22'),
 (3, 'salsa tami', 'salsa de ajo', 10000.00, 'saltam434');
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `platillo_ingredientes`
---
-
-CREATE TABLE `platillo_ingredientes` (
-  `platillo_id` int(11) NOT NULL,
-  `ingredientes_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `platillo_ingredientes`
---
 
 INSERT INTO `platillo_ingredientes` (`platillo_id`, `ingredientes_id`) VALUES
 (1, 5),
@@ -175,115 +157,28 @@ INSERT INTO `platillo_ingredientes` (`platillo_id`, `ingredientes_id`) VALUES
 (3, 4),
 (3, 5);
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `platillo_restaurantes_menu`
---
-
-CREATE TABLE `platillo_restaurantes_menu` (
-  `id` int(11) NOT NULL,
-  `platillo_id` int(11) NOT NULL,
-  `restaurantes_id` int(11) NOT NULL,
-  `estado` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `platillo_restaurantes_menu`
---
-
-INSERT INTO `platillo_restaurantes_menu` (`id`, `platillo_id`, `restaurantes_id`, `estado`) VALUES
-(1, 1, 1, 1),
-(2, 3, 1, 1);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `restaurantes`
---
-
-CREATE TABLE `restaurantes` (
-  `id` int(11) NOT NULL,
-  `nombre` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `email` varchar(150) NOT NULL,
-  `sucursal` int(11) NOT NULL,
-  `Slug` varchar(150) NOT NULL,
-  `NIT` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `restaurantes`
---
-
-INSERT INTO `restaurantes` (`id`, `nombre`, `password`, `email`, `sucursal`, `Slug`, `NIT`) VALUES
-(1, 'Sushi Kami', '12354', 'SushKami@correo.com', 1, 'daewf', 123412423523);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `sucursales`
---
-
-CREATE TABLE `sucursales` (
-  `id` int(11) NOT NULL,
-  `direccion` varchar(50) DEFAULT 'VIRTUAL'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `sucursales`
---
-
 INSERT INTO `sucursales` (`id`, `direccion`) VALUES
 (1, 'VIRTUAL'),
 (2, 'Poblado');
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `sucursal_telefonos`
---
-
-CREATE TABLE `sucursal_telefonos` (
-  `telefono_id` int(11) NOT NULL,
-  `sucursal_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `sucursal_telefonos`
---
 
 INSERT INTO `sucursal_telefonos` (`telefono_id`, `sucursal_id`) VALUES
 (1, 2),
 (2, 1);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `telefono`
---
-
-CREATE TABLE `telefono` (
-  `id` int(11) NOT NULL,
-  `telefono` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `telefono`
---
 
 INSERT INTO `telefono` (`id`, `telefono`) VALUES
 (0, '+5731758963866'),
 (1, '+5731758963866'),
 (2, '+573175834536');
 
---
--- Índices para tablas volcadas
---
+INSERT INTO `restaurantes` (`id`, `nombre`, `password`, `email`, `sucursal`, `Slug`, `NIT`) VALUES
+(1, 'Sushi Kami', '12354', 'SushKami@correo.com', 1, 'daewf', 123412423523);
 
---
--- Indices de la tabla `clientes`
---
+
+INSERT INTO `platillo_restaurantes_menu` (`id`, `platillo_id`, `restaurantes_id`, `estado`) VALUES
+(1, 1, 1, 1),
+(2, 3, 1, 1);
+
 ALTER TABLE `clientes`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `Password` (`Password`),
