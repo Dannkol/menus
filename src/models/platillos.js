@@ -107,13 +107,16 @@ const putPlatillos = async (req, data, id) => {
   }
 };
 
-const getPlatillos = async (id) => {
+const getPlatillos = async (id,req) => {
   const connection = await getConnection();
 
   try {
-    const query_user = `Select nombre , descripcion, precio, slug from platillos WHERE id = ?;`;
+    const query_user = `SELECT t1.id , nombre , descripcion, precio, slug FROM platillo_restaurantes_menu AS t1 
+    INNER JOIN platillos AS t2 ON t2.id = t1.platillo_id
+    WHERE t1.restaurantes_id = ? AND t1.id = ? ;`;
 
-    const [result] = await connection.execute(query_user, [id]);
+
+    const [result] = await connection.execute(query_user, [req.user.id , id]);
 
     return result;
   } catch (error) {

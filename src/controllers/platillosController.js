@@ -55,7 +55,7 @@ const getPlatillos = async (req, res) => {
   try {
     const id = req.params.id;
 
-    const result = await platillos.getPlatillos(id);
+    const result = await platillos.getPlatillos(id,req);
 
     res.status(200).json(result);
   } catch (error) {
