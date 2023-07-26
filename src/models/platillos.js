@@ -18,7 +18,7 @@ const getAllPlatillos = async (req) => {
     const [result] = await connection.execute(query_user, [req.user.id]);
 
     return {
-      mensaje: "Menu del restaurante 1",
+      mensaje: `Menu del restaurante ${req.user.nombre}`,
       data: result,
     };
   } catch (error) {
