@@ -86,7 +86,7 @@ Inicializa el servidor de desarrollo
   npm run dev
 ```
 
-crea la base de datos con el archivo database.sql, este se encuentra en la carpeta db, tambien puedes usar el script phpmyadmin.sql, este es el script generado por phpmyadmin contiene la data minima necesaria para el buen funcionamiento de la aplicacion.
+crea la base de datos con el archivo phpmyadmin.php, si necesitas solo las tablas puedes usar el archivo database.sql (Desactualizado)
 
 #### NOTA: NO OLVIDES CAMBIAR LAS VARIABLES DE ENTORNO A TUS NECESIDADES
 
@@ -101,6 +101,7 @@ Node, Express, Mysql
 
 ## API Reference
 
+**NOTA** : `RECUERDA USAR EN EL HEADER DE LA PETICION EL PARAMETRO Authorization CON LA API_KEY O TOKEN PARA LOS ENDPOINTS QUE SEA OBLIGATORIO`
 
 ## Authentication
 
@@ -109,11 +110,11 @@ Dependiendo del rol tienes Ciertos permisos en algunas tablas
 ### Authentication Restaurantes
 
 ```http
-GET /api/auth/restaurante/
+POST /api/auth/restaurante/
 ```
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. |
+| `api_key` | `string` | **Opcional**. |
 | `email` | `string` | **Required**. |
 | `password` | `string` | **Required**. |
 
@@ -121,8 +122,8 @@ Request
 
 ```json
 {
-    "email" : "devjgi@gmail.com",
-    "password" : "12345"
+    "email" : "SushKami@correo.com",
+    "password" : "12354"
 }
 ```
 
@@ -137,11 +138,11 @@ Responde
 ### Authentication Clientes
 
 ```http
-GET /api/auth/restaurante/
+POST /api/auth/
 ```
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. |
+| `api_key` | `string` | **Opcional**. |
 | `email` | `string` | **Required**. |
 | `password` | `string` | **Required**. |
 
@@ -149,8 +150,8 @@ Request
 
 ```json
 {
-    "email" : "clinete@correo.com",
-    "password" : "123a45"
+    "email" : "daniel@correo.com",
+    "password" : "12345"
 }
 ```
 
@@ -286,6 +287,8 @@ Responde
 
 #### Delete ingredientes para uctualizar ingredientes
 
+NOTA : `SOLO PUEDES BORRAR INGREDIENTES QUE NO ESTEN ASOSIADOS A UN PLATILLO `
+
 ```http
 DELETE /api/auth/restaurante/menu/ingredientes/{id}
 ```
@@ -410,7 +413,7 @@ Responde
 ### Put ingredientes de un platillo
 
 ```http
-PUT /auth/restaurante/menu/:platillo/ingrediente/:ingredientes
+PUT /api/auth/restaurante/menu/:platillo/ingrediente/:ingredientes
 ```
 | Parameter | Type     | Description |
 | :-------- | :------- | :------------ |
@@ -423,6 +426,7 @@ Request
 params: id del platillo y el ingrediente a actualizar
 
 Body el id del ingrediente actualizado
+
 ```json
 {
   "ingrediente" : 1
@@ -438,27 +442,11 @@ Responde
 }
 ```
 
-#### Delete platillo
-
-```http
-DELETE /api/auth/restaurante/menu/{id}
-```
-| Parameter | Type     | Description |
-| :-------- | :------- | :------------ |
-| `api_key`      | `string` | **Required**.  |
-| `id` | `string` | **Required**.  |
-
-
-Responde
-```json
-{
-    "mensaje" : "Platillo eliminado"
-}
-```
-
 ## Cientes
 
 los clientes pueden realizar pedidos, estos pueden estar registrados o ser ananonimos, al realizar un pedido, este se relaciona al usuario si esta logueado y tambien se relaciona al restaurante sin importar si esta logueado o no
+
+NOTA : `Si usas el token de un restaurante no podras usar los endpoints, tendras un error de permisos`
 
 
 #### Post realizar un pedido
@@ -489,11 +477,12 @@ Request
 
 ```json
 {
-    "platillo" : 1,
+    "platillo_menu" : 1,
     "cantidad" : 2,
-    "metodo_pago" : 2
+    "metodo_pago" : 1
 }
 ```
+
 #### Usuario no registrado
 
 Request
@@ -520,6 +509,45 @@ Responde
 
 }
 ```
+#### Get pedidos realizados
+
+```http
+GET /api/pedidos
+```
+
+NOTA : `Si el usuario no esta registrado se usaran las cookies para tener un historial de sus pedidos Status: 403 Forbidden`
+
+```json
+{
+  "error": "No tienes permisos para esta acción"
+}
+```
+
+
+```json
+{
+  "mensaje": "mis pedidos",
+  "data": [
+    {
+      "Mensaje": "https://api.whatsapp.com/send?phone=573175834536&text=Hola%2C%20quiero%202%20sushi%20salmon%20%F0%9F%8D%94%20%F0%9F%93%8Del%20poblado%20%F0%9F%93%B113254868%20%E2%9C%8BDaniel%20por%20favor%20sin%20undefined",
+      "Fecha": "2023-07-26T12:53:11.000Z",
+      "Metod_pago": "Efectivo",
+      "Restaurante": "Sushi Kami",
+      "Platilo": "sushi salmon",
+      "Total": "100000.00"
+    },
+    {
+      "Mensaje": "https://api.whatsapp.com/send?phone=573175834536&text=Hola%2C%20quiero%202%20sushi%20salmon%20%F0%9F%8D%94%20%F0%9F%93%8Del%20poblado%20%F0%9F%93%B113254868%20%E2%9C%8BDaniel%20por%20favor%20sin%20undefined",
+      "Fecha": "2023-07-26T12:53:11.000Z",
+      "Metod_pago": "Efectivo",
+      "Restaurante": "Sushi Kami",
+      "Platilo": "papas fritas",
+      "Total": "6.00"
+    }
+  ]
+}
+```
+
 
 #### Post Creacion de un usuario
 
