@@ -103,9 +103,10 @@ Node, Express, Mysql
 
 **NOTA** : `RECUERDA USAR EN EL HEADER DE LA PETICION EL PARAMETRO Authorization CON LA API_KEY O TOKEN PARA LOS ENDPOINTS QUE SEA OBLIGATORIO`
 
-## Authentication
 
-Dependiendo del rol tienes Ciertos permisos en algunas tablas
+## Restaurantes
+
+NOTA : `Para usar estos endpoint tienes que estas loguando como restaurante y usar su api_key en el header Authorization`
 
 ### Authentication Restaurantes
 
@@ -134,38 +135,6 @@ Responde
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibm9tYnJlIjoicGVwZXMiLCJyb2wiOiJyZXN0YXVyYW50ZSIsImlhdCI6MTY5MDE2NDg2NiwiZXhwIjoxNjkwMTY4NDY2fQ.5ua59hXVduEpwrJLlh57EFi3IZnh3inH6JhN8Q-Zm3g"
 }
 ```
-
-### Authentication Clientes
-
-```http
-POST /api/auth/
-```
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Opcional**. |
-| `email` | `string` | **Required**. |
-| `password` | `string` | **Required**. |
-
-Request
-
-```json
-{
-    "email" : "daniel@correo.com",
-    "password" : "12345"
-}
-```
-
-Responde
-
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibm9tYnJlIjoicGVwZXMiLCJyb2wiOiJyZXN0YXVyYW50ZSIsImlhdCI6MTY5MDE2NDg2NiwiZXhwIjoxNjkwMTY4NDY2fQ.5ua59hXVduEpwrJLlh57EFi3IZnh3inH6JhN8Q-Zm3g"
-}
-```
-
-
-
-## Restaurantes
 
 Cada Restaurante tiene su propio menu, pueden realizar todas las acciones de un CRUD
 
@@ -285,7 +254,7 @@ Responde
 }
 ```
 
-#### Delete ingredientes para uctualizar ingredientes
+#### Delete ingredientes 
 
 NOTA : `SOLO PUEDES BORRAR INGREDIENTES QUE NO ESTEN ASOSIADOS A UN PLATILLO `
 
@@ -390,7 +359,6 @@ PUT /api/auth/restaurante/menu/{id}
 | `precio` | `number`| **Required** |
 | `descripcion` | `string`| **Required** |
 | `slug` | `string`| nombre + random_number |
-| `ingredientes` | `array` | **Required** |
 
 Request
 
@@ -443,6 +411,37 @@ Responde
 ```
 
 ## Cientes
+
+NOTA : `Para usar estos endpoint tienes que estas loguando como cliente y usar su api_key en el header Authorization o no usar ningun header`
+
+
+### Authentication Clientes
+
+```http
+POST /api/auth/
+```
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `api_key` | `string` | **Opcional**. |
+| `email` | `string` | **Required**. |
+| `password` | `string` | **Required**. |
+
+Request
+
+```json
+{
+    "email" : "daniel@correo.com",
+    "password" : "12345"
+}
+```
+
+Responde
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibm9tYnJlIjoicGVwZXMiLCJyb2wiOiJyZXN0YXVyYW50ZSIsImlhdCI6MTY5MDE2NDg2NiwiZXhwIjoxNjkwMTY4NDY2fQ.5ua59hXVduEpwrJLlh57EFi3IZnh3inH6JhN8Q-Zm3g"
+}
+```
 
 los clientes pueden realizar pedidos, estos pueden estar registrados o ser ananonimos, al realizar un pedido, este se relaciona al usuario si esta logueado y tambien se relaciona al restaurante sin importar si esta logueado o no
 
