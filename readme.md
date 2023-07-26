@@ -106,7 +106,7 @@ Node, Express, Mysql
 
 ## Restaurantes
 
-NOTA : `Para usar estos endpoint tienes que estas loguando como restaurante y usar su api_key en el header Authorization`
+NOTA : `Para usar estos endpoint tienes que estas logueado como restaurante y usar su api_key en el header Authorization`
 
 ### Authentication Restaurantes
 
@@ -412,7 +412,7 @@ Responde
 
 ## Cientes
 
-NOTA : `Para usar estos endpoint tienes que estas loguando como cliente y usar su api_key en el header Authorization o no usar ningun header`
+NOTA : `Para usar estos endpoint tienes que estas logueado como cliente y usar su api_key en el header Authorization o no usar ningun header de Authorization`
 
 
 ### Authentication Clientes
