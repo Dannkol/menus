@@ -85,7 +85,7 @@ router.delete(
 // CRUD Platillos
 
 router.get("/auth/restaurante/menu", authenticateToken, getAllPlatillos);
-router.post("/auth/restaurante/menu", authenticateToken, createPlatillos);
+router.post("/auth/restaurante/menu", authenticateToken, platillosDTO , createPlatillos);
 router.put("/auth/restaurante/menu/:id", authenticateToken, putPlatillos);
 
 router.put(

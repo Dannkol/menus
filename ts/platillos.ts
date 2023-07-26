@@ -19,9 +19,5 @@ export class platillos {
   @IsInt({ message: "El campo precio debe ser un int" })
   precio: number;
 
-  @Expose()
-  @IsNotEmpty({ message: 'El campo slug no puede estar vacío' })
-  @IsString({ message: "El campo slug debe ser un string" })
-  slug: string;
 
 }

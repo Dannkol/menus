@@ -23,8 +23,3 @@ __decorate([
     IsNotEmpty({ message: 'El campo precio no puede estar vacío' }),
     IsInt({ message: "El campo precio debe ser un int" })
 ], platillos.prototype, "precio", void 0);
-__decorate([
-    Expose(),
-    IsNotEmpty({ message: 'El campo slug no puede estar vacío' }),
-    IsString({ message: "El campo slug debe ser un string" })
-], platillos.prototype, "slug", void 0);
