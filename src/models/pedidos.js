@@ -31,6 +31,10 @@ const authCliente = async (id, data) => {
     data["telefono_restaurante"] = rows2[0]["telefono"];
     data["restaurantes_id"] = rows2[0]["id"];
 
+    if (data["opciones"]) {
+      await opciones(data);
+    }
+
     return data;
   } catch (error) {
     console.log(error);
