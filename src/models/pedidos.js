@@ -121,7 +121,6 @@ const annopedidos = async (data) => {
 const createPedido = async (user, data, req, res) => {
   const connection = await getConnection();
   try {
-
     // Objeto dependiendo si el usuario es registrado o anonimo
     let objeto = !user
       ? await annopedidos(data)
@@ -154,7 +153,7 @@ const createPedido = async (user, data, req, res) => {
     ]);
 
     // guardo en las cookies el historial de los usuarios anonimos
-    
+
     if (!user) {
       let pedidos = req.cookies.pedidos;
       if (pedidos) {
@@ -178,47 +177,44 @@ const createPedido = async (user, data, req, res) => {
   }
 };
 
-const getPedidos = async(req, user) => {
+const getPedidos = async (req, user) => {
   const connection = await getConnection();
   const ids = !user ? req.cookies.pedidos : req.user.id;
   try {
     // Construir la consulta SQL con la cláusula IN y los IDs del array
-    const query = !user ? `
-      SELECT t1.Mensaje, t1.Created_at AS "Fecha", t2.Nombre AS "Metod_pago",
-        t5.nombre AS "Restaurante", t6.nombre AS "Platilo", t6.precio * t3.Cantidad AS "Total"
-      FROM pedidos AS t1 
-      INNER JOIN metodo_pago AS t2 ON t1.Metodo_pago = t2.id
-      INNER JOIN pedidos_platillos AS t3 ON t3.PedidoId = t1.id
-      INNER JOIN platillo_restaurantes_menu AS t4 ON t4.restaurantes_id = t3.menuId
-      INNER JOIN restaurantes AS t5 ON t5.id = t4.restaurantes_id
-      INNER JOIN platillos AS t6 ON t6.id = t4.platillo_id
-      WHERE t1.id IN (?)
-    ` : `
-    SELECT t1.Mensaje, t1.Created_at AS "Fecha", t2.Nombre AS "Metod_pago",
-      t5.nombre AS "Restaurante", t6.nombre AS "Platilo", t6.precio * t3.Cantidad AS "Total"
-    FROM pedidos AS t1 
-    INNER JOIN metodo_pago AS t2 ON t1.Metodo_pago = t2.id
-    INNER JOIN pedidos_platillos AS t3 ON t3.PedidoId = t1.id
-    INNER JOIN platillo_restaurantes_menu AS t4 ON t4.restaurantes_id = t3.menuId
-    INNER JOIN restaurantes AS t5 ON t5.id = t4.restaurantes_id
-    INNER JOIN platillos AS t6 ON t6.id = t4.platillo_id
-    WHERE t1.Cliente_id = ?
-   ;`
+    const query = !user
+      ? `SELECT t2.Mensaje, t2.Created_at AS "Fecha", t6.Nombre AS "Metod_pago",
+    t5.nombre AS "Restaurante", t4.nombre AS "Platilo", t4.precio * t1.Cantidad AS "Total" FROM pedidos_platillos AS t1
+ INNER JOIN pedidos AS t2 ON t1.PedidoId = t2.id
+ INNER JOIN platillo_restaurantes_menu As t3 ON t3.id = t1.menuId
+ INNER JOIN metodo_pago AS t6 ON t2.Metodo_pago = t6.id
+ INNER JOIN restaurantes AS t5 ON t3.restaurantes_id = 	t5.id
+ INNER JOIN platillos AS t4 ON t3.platillo_id = t4.id
+ WHERE t1.PedidoId IN (?)`
+      : `SELECT t2.Mensaje, t2.Created_at AS "Fecha", t6.Nombre AS "Metod_pago",
+      t5.nombre AS "Restaurante", t4.nombre AS "Platilo", t4.precio * t1.Cantidad AS "Total" FROM pedidos_platillos AS t1
+   INNER JOIN pedidos AS t2 ON t1.PedidoId = t2.id
+   INNER JOIN platillo_restaurantes_menu As t3 ON t3.id = t1.menuId
+   INNER JOIN metodo_pago AS t6 ON t2.Metodo_pago = t6.id
+   INNER JOIN restaurantes AS t5 ON t3.restaurantes_id = 	t5.id
+   INNER JOIN platillos AS t4 ON t3.platillo_id = t4.id
+   WHERE t2.Cliente_id = 0;`;
+
+    console.log(req.cookies.pedidos);
 
     // Ejecutar la consulta con los IDs del array
     const [rows, fields] = await connection.query(query, [ids]);
 
     // Aquí tienes los resultados de la consulta
-    return{
-      mensaje : "mis pedidos",
-      data : rows
-    }
+    return {
+      mensaje: "mis pedidos",
+      data: rows,
+    };
   } catch (error) {
-    console.error('Error en la consulta:', error);
+    console.error("Error en la consulta:", error);
   } finally {
     connection.end();
   }
-
-}
+};
 
 export default { createPedido, getPedidos };
