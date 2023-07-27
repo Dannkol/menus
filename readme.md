@@ -86,7 +86,9 @@ Inicializa el servidor de desarrollo
   npm run dev
 ```
 
-crea la base de datos con el archivo phpmyadmin.php, si necesitas solo las tablas puedes usar el archivo database.sql (Desactualizado)
+# Crear Base de datos
+
+crea la base de datos con el archivo phpmyadmin.php, que se encuentra en db/phpmyadmin.sql si necesitas solo las tablas puedes usar el archivo database.sql (Desactualizado)
 
 #### NOTA: NO OLVIDES CAMBIAR LAS VARIABLES DE ENTORNO A TUS NECESIDADES
 
